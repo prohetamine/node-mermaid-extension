@@ -6,6 +6,7 @@ const express           = require('express')
     , path              = require('path')
     , bodyParser        = require('body-parser')
     , { Server }        = require('socket.io')
+    , base64 = require('base-64');
 
 const io = new Server(server, {
   cors: {
@@ -25,6 +26,8 @@ global.set_default_delay = 700
 
 const sendMessageSocket = (path, message) => io.sockets.emit(path, [{ text: message, delay: set_default_delay }])
     , sendMessagesSocket = (path, messages) => io.sockets.emit(path, messages.map(message => ({ text: message, delay: set_default_delay })))
+
+const parseBase64 = data => JSON.parse(base64.decode(data))
 
 const useHttp = (path = null, callback = null) => {
   const isPath = typeof(path) == 'string' ? path : null
@@ -47,6 +50,7 @@ const useHttp = (path = null, callback = null) => {
       event,
       sendMessageSocket,
       sendMessagesSocket,
+      parseBase64,
       nextPlugin: () => next(),
       sendMessage: message => res.send(JSON.stringify([{ text: message, delay: set_default_delay }])),
       sendMessages: messages => res.send(JSON.stringify(messages.map(message => ({ text: message, delay: set_default_delay })))),
@@ -101,6 +105,7 @@ module.exports = ({ port = 8888, test = false, debug = false } = { port: 8888, t
             sendRawSocket,
             sendMessageSocket,
             sendMessagesSocket,
+            parseBase64,
             debug,
             test
           }
