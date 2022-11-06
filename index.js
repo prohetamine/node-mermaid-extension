@@ -27,8 +27,13 @@ global.set_default_delay = 700
 const sendMessageSocket = (path, message) => io.sockets.emit(path, [{ text: message, delay: set_default_delay }])
     , sendMessagesSocket = (path, messages) => io.sockets.emit(path, messages.map(message => ({ text: message, delay: set_default_delay })))
 
-const parseBase64 = data => JSON.parse(base64.decode(data))
-
+const parseBase64 = data => {
+  try {
+    return JSON.parse(base64.decode(data))
+  } catch (e) {
+    return ''
+  }
+}
 const useHttp = (path = null, callback = null) => {
   const isPath = typeof(path) == 'string' ? path : null
 
