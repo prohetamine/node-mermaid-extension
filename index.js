@@ -29,11 +29,13 @@ const sendMessageSocket = (path, message) => io.sockets.emit(path, [{ text: mess
 
 const parseBase64 = data => {
   try {
-    return JSON.parse(base64.decode(data).map(char => String.fromCharCode(char)))
-  } catch (e) {
+    return JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join(''))
+  } catch (err) {
+    console.log(err)
     return ''
   }
 }
+
 const useHttp = (path = null, callback = null) => {
   const isPath = typeof(path) == 'string' ? path : null
 
