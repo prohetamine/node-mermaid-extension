@@ -6,7 +6,8 @@ const express           = require('express')
     , path              = require('path')
     , bodyParser        = require('body-parser')
     , { Server }        = require('socket.io')
-    , base64            = require('base-64');
+    , base64            = require('base-64')
+    , { unescape }      = require('html-escaper')
 
 const io = new Server(server, {
   cors: {
@@ -29,7 +30,7 @@ const sendMessageSocket = (path, message) => io.sockets.emit(path, [{ text: mess
 
 const parseBase64 = data => {
   try {
-    return JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join(''))
+    return unescape(JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join('')))
   } catch (err) {
     console.log(err)
     return ''
