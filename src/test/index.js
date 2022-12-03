@@ -8,8 +8,8 @@ const Mermaid = require('./../index')({
 
 console.log('Init plugins')
 
-const debug   = require('./../plugins/debug')
-    , end     = require('./../plugins/end')
+const debug   = require('./../../plugins/debug')
+    , end     = require('./../../plugins/end')
 
 ;(async () => {
   console.log('Create instance')

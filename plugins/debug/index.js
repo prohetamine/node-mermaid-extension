@@ -6,11 +6,6 @@ module.exports = ({ fetch, test }) =>
       console.log(event.platform, 'pure event: ', parseBase64(event.pureEvent))
     }*/
 
-    if (event.isParsedEvent && event.platform === 'bongacams' && parseBase64(event.parseEvent.message) === 'hello') {
-      sendMessageSocket('chat-bongacams', '1231231')
-    }
-
-
 
     console.log(event)
 
