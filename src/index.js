@@ -28,18 +28,15 @@ global.set_default_delay = 700
 const sendMessageSocket = (path, message) => io.sockets.emit(path, [{ text: message, delay: set_default_delay }])
     , sendMessagesSocket = (path, messages) => io.sockets.emit(path, messages.map(message => ({ text: message, delay: set_default_delay })))
 
-const parseBase64 = data => {
+const parseBase64 = (data, { type } = { type: 'object' }) => {
   try {
-    return JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join(''))
-  } catch (err) {
-    console.log(err)
-    return ''
-  }
-}
+    if (type === 'string') {
+      return unescape(JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join('')))
+    }
 
-const parseMessageBase64 = data => {
-  try {
-    return unescape(JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join('')))
+    if (type === 'object') {
+      return JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join(''))
+    }
   } catch (err) {
     console.log(err)
     return ''
@@ -68,7 +65,6 @@ const useHttp = (path = null, callback = null) => {
       sendMessageSocket,
       sendMessagesSocket,
       parseBase64,
-      parseMessageBase64,
       nextPlugin: () => next(),
       sendMessage: message => res.send(JSON.stringify([{ text: message, delay: set_default_delay }])),
       sendMessages: messages => res.send(JSON.stringify(messages.map(message => ({ text: message, delay: set_default_delay })))),
