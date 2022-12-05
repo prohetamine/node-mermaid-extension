@@ -1,6 +1,6 @@
 {
   "name": "node-mermaid-extension",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "Automated webcam chat reading and routing between devices and servers. Developer: https://prohetamine.ru made with ❤️",
   "main": "src/index.js",
   "author": "Stas Prohetamine",

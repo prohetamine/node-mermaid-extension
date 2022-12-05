@@ -2,11 +2,6 @@ module.exports = ({ fetch, test }) => {
   let n = 0;
 
   fetch.usePost('/events', ({ event, parseBase64, sendMessageSocket, nextPlugin }) => {
-    /*if (event.isParsedEvent) {
-      console.log(event.platform, 'parse event:', event.parseEvent, event.parseEvent.isModel, event.parseEvent.username, parseBase64(event.parseEvent.message))
-    } else {
-      console.log(event.platform, 'pure event: ', parseBase64(event.pureEvent))
-    }*/
     n++
 
     console.log(`--------------- #${n} ---------------`)
@@ -40,37 +35,6 @@ module.exports = ({ fetch, test }) => {
       console.log(` notice:`, parseBase64(event.parseEvent.notice))
     }
     console.log(``)
-
-    /*
-      contextId: '9999-9999-9999',
-      id: 1,
-      socketType: 'message',
-      hashId: 'ashdsdhfhfsdhdhedhasd',
-      platform: 'bongacams',
-      modelUsername: 'username',
-      pureEvent: 'base64',
-      isParsedEvent: true,
-      parseEvent: {
-        isModel: false,
-        isUser: false,
-        isAnon: false,
-        isNotice: false,
-        isToken: false,
-        isRoomCount: false,
-        isRemovedMessage: false,
-        isDisconnect: false,
-        isConnect: false,
-        isBan: false,
-        tokenCount: 0,
-        message: "base64",
-        tokenMessage: "base64",
-        username: "",
-        roomCount: 0,
-        user: 'base64',
-        model: 'base64',
-        notice: 'base64'
-      }
-    */
 
     nextPlugin()
   })
