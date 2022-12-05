@@ -30,7 +30,15 @@ const sendMessageSocket = (path, message) => io.sockets.emit(path, [{ text: mess
 
 const parseBase64 = data => {
   try {
-    return unescape(JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join('')))
+    try {
+      const data = JSON.parse(unescape(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join('')))
+      console.log(data)
+      return data
+    } catch (e) {
+      const data = JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join(''))
+      console.log(data)
+      return data
+    }
   } catch (err) {
     console.log(err)
     return ''
