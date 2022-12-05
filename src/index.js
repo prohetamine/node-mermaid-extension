@@ -28,18 +28,20 @@ global.set_default_delay = 700
 const sendMessageSocket = (path, message) => io.sockets.emit(path, [{ text: message, delay: set_default_delay }])
     , sendMessagesSocket = (path, messages) => io.sockets.emit(path, messages.map(message => ({ text: message, delay: set_default_delay })))
 
-const parseBase64 = (data, { type } = { type: 'object' }) => {
+const parseBase64 = (data, { decode } = { decode: 'object' }) => {
   try {
-    if (type === 'string') {
+    if (decode === 'string') {
       return unescape(JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join('')))
     }
 
-    if (type === 'object') {
+    if (decode === 'object') {
       return JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join(''))
     }
+
+    return null
   } catch (err) {
     console.log(err)
-    return ''
+    return null
   }
 }
 
