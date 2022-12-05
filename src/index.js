@@ -30,15 +30,16 @@ const sendMessageSocket = (path, message) => io.sockets.emit(path, [{ text: mess
 
 const parseBase64 = data => {
   try {
-    try {
-      const data = JSON.parse(unescape(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join('')))
-      console.log(data)
-      return data
-    } catch (e) {
-      const data = JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join(''))
-      console.log(data)
-      return data
-    }
+    return JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join(''))
+  } catch (err) {
+    console.log(err)
+    return ''
+  }
+}
+
+const parseMessageBase64 = data => {
+  try {
+    return unescape(JSON.parse(base64.decode(data).split(',').map(char => String.fromCharCode(char)).join('')))
   } catch (err) {
     console.log(err)
     return ''
@@ -67,6 +68,7 @@ const useHttp = (path = null, callback = null) => {
       sendMessageSocket,
       sendMessagesSocket,
       parseBase64,
+      parseMessageBase64,
       nextPlugin: () => next(),
       sendMessage: message => res.send(JSON.stringify([{ text: message, delay: set_default_delay }])),
       sendMessages: messages => res.send(JSON.stringify(messages.map(message => ({ text: message, delay: set_default_delay })))),
